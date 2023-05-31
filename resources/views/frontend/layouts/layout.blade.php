@@ -58,5 +58,6 @@
         document.getElementById("mySidepanel").style.width = "0";
     }
 </script>
+@yield("extra-script")
 </body>
 </html>
