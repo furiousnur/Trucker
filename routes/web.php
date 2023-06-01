@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\DashboardController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -20,3 +21,8 @@ Route::get('/', [App\Http\Controllers\FrontendController::class, 'home'])->name(
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/registration', [LoginController::class, 'showRegistrationForm'])->name('registration');
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+/*Backend Routes*/
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
+});

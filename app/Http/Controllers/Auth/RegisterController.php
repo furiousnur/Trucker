@@ -49,11 +49,34 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+        if (empty($data['type'])){
+            return Validator::make($data, [
+                'type' => ['required']
+            ]);
+        }
+        if ($data['type'] == 'passenger' || $data['type'] == 'driver' ){
+            return Validator::make($data, [
+                'name' => ['required', 'string', 'max:255'],
+                'phone_number' => ['required', 'numeric'],
+                'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+                'password' => ['required', 'string', 'min:8', 'confirmed'],
+                'gender' => ['required'],
+            ]);
+        }
+        if ($data['type'] == 'passenger'){
+            return Validator::make($data, [
+                'nid' => ['required'],
+            ]);
+        }
+        if ($data['type'] == 'driver'){
+            return Validator::make($data, [
+                'address' => ['required', 'string'],
+                'dr_lic_num' => ['required'],
+                'veh_reg_num' => ['required'],
+                'dob' => ['required'],
+                'monthly_income' => ['required'],
+            ]);
+        }
     }
 
     /**
@@ -65,9 +88,18 @@ class RegisterController extends Controller
     protected function create(array $data)
     {
         return User::create([
+            'user_type' => $data['type'],
             'name' => $data['name'],
             'email' => $data['email'],
+            'gender' => $data['gender'],
+            'phone_number' => $data['phone_number'],
             'password' => Hash::make($data['password']),
+            'nid' => $data['type'] == 'passenger' ? $data['nid'] : null,
+            'address' => $data['type'] == 'driver' ? $data['address'] : null,
+            'dr_lic_num' => $data['type'] == 'driver' ? $data['dr_lic_num'] : null,
+            'veh_reg_num' => $data['type'] == 'driver' ? $data['veh_reg_num'] : null,
+            'dob' => $data['type'] == 'driver' ? $data['dob'] : null,
+            'monthly_income' => $data['type'] == 'driver' ? $data['monthly_income'] : null,
         ]);
     }
 }
