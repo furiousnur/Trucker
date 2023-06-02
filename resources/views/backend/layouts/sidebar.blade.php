@@ -26,6 +26,9 @@
                 <i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span>
             </a>
         </li>
+        @can('location-sidebar')
+            <li><a class="app-menu__item {{ Request::segment(1) == 'location'  ? 'active' : ''}}" href="{{route('location.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Locations</span></a></li>
+        @endcan
         @can('user-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'users'  ? 'active' : ''}}" href="{{route('users.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Users</span></a></li>
         @endcan
