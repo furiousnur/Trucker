@@ -32,11 +32,11 @@ class LocationController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'location_name' => 'required',
+            'location_name' => 'required|unique:locations,location_name',
         ]);
 
         $input = $request->all();
-        $user = Location::create($input);
+        $location = Location::create($input);
         return redirect()->route('location.index')
             ->with('success','Location created successfully');
     }
@@ -64,12 +64,12 @@ class LocationController extends Controller
     public function update(Request $request, string $id)
     {
         $this->validate($request, [
-            'location_name' => 'required'
+            'location_name' => 'required|unique:locations,location_name,'.$id,
         ]);
 
         $input = $request->all();
-        $user = Location::find($id);
-        $user->update($input);
+        $location = Location::find($id);
+        $location->update($input);
         return redirect()->route('location.index')
             ->with('success','Location updated successfully');
     }
