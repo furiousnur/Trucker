@@ -21,16 +21,22 @@
         @can('invoice-report-sidebar')
             <li><a class="app-menu__item {{ Request::segment(2) == 'invoice-report'  ? 'active' : ''}}" href="{{route('invoice.report')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Invoice Report</span></a></li>
         @endcan--}}
-        <li>
-            <a class="app-menu__item {{ Request::segment(1) == 'dashboard'  ? 'active' : ''}}" href="{{route('dashboard')}}">
-                <i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span>
-            </a>
-        </li>
+
+        @can('dashboard-sidebar')
+            <li>
+                <a class="app-menu__item {{ Request::segment(1) == 'dashboard'  ? 'active' : ''}}" href="{{route('dashboard')}}">
+                    <i class="app-menu__icon fa fa-dashboard"></i><span class="app-menu__label">Dashboard</span>
+                </a>
+            </li>
+        @endcan
         @can('location-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'location'  ? 'active' : ''}}" href="{{route('location.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Locations</span></a></li>
         @endcan
         @can('location-price-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'location-price'  ? 'active' : ''}}" href="{{route('location-price.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Location Price</span></a></li>
+        @endcan
+        @can('booking-sidebar')
+            <li><a class="app-menu__item {{ Request::segment(1) == 'booking'  ? 'active' : ''}}" href="{{route('booking.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Booking List</span></a></li>
         @endcan
         @can('user-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'users'  ? 'active' : ''}}" href="{{route('users.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Users</span></a></li>

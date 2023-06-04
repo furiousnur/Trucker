@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LocationPriceController;
@@ -34,4 +35,5 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('/users', UserController::class);
     Route::resource('/location', LocationController::class);
     Route::resource('/location-price', LocationPriceController::class);
+    Route::resource('/booking', BookingController::class);
 });

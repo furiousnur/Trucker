@@ -66,6 +66,10 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'location-price-sidebar',
                 'guard_name' => 'web'
+            ],
+            [
+                'name' => 'booking-sidebar',
+                'guard_name' => 'web'
             ]
         ]);
     }
