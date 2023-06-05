@@ -36,4 +36,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('/location', LocationController::class);
     Route::resource('/location-price', LocationPriceController::class);
     Route::resource('/booking', BookingController::class);
+    Route::get('/where-to-locations/{id}', [BookingController::class, 'whereToLocation']);
+    Route::get('/where-to-price/{whereToId}/{PickupPointId}', [BookingController::class, 'whereToPrice']);
 });

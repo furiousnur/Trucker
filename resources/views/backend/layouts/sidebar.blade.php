@@ -39,7 +39,13 @@
             <li><a class="app-menu__item {{ Request::segment(1) == 'booking'  ? 'active' : ''}}" href="{{route('booking.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Booking List</span></a></li>
         @endcan
         @can('user-sidebar')
-            <li><a class="app-menu__item {{ Request::segment(1) == 'users'  ? 'active' : ''}}" href="{{route('users.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Users</span></a></li>
+            <li><a class="app-menu__item {{ Request::segment(1) == 'users'  ? 'active' : ''}}" href="{{route('users.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Passengers</span></a></li>
+        @endcan
+        @can('user-sidebar')
+            <li><a class="app-menu__item {{ Request::segment(1) == 'users'  ? 'active' : ''}}" href="{{route('users.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Drivers</span></a></li>
+        @endcan
+        @can('user-sidebar')
+            <li><a class="app-menu__item {{ Request::segment(1) == 'users'  ? 'active' : ''}}" href="{{route('users.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">All Users</span></a></li>
         @endcan
         @can('role-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'roles'  ? 'active' : ''}}" href="{{route('roles.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Roles</span></a></li>

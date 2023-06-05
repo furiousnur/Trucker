@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
+use App\Models\LocationPrice;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -40,7 +43,13 @@ class BookingController extends Controller
      */
     public function create()
     {
-        //
+        $passengers = User::latest()->where('user_type', 'passenger')->get();
+        $drivers = User::latest()->where('user_type', 'driver')->get();
+        $pickupPoints = DB::table('location_prices as lp')
+            ->leftJoin('locations as pp', 'pp.id', '=', 'lp.pickup_point')
+            ->select('pp.location_name as pickup_point', 'lp.price', 'lp.id')
+            ->orderBy('lp.id', 'DESC')->get();
+        return view('backend.pages.booking.create',compact('pickupPoints','passengers','drivers'));
     }
 
     /**
@@ -81,5 +90,25 @@ class BookingController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function whereToPrice(string $whereToId, $PickupPointId)
+    {
+        $price = DB::table('location_prices')->where('where_to', $whereToId)->where('pickup_point', $PickupPointId)->first('price');
+        return response()->json($price);
+    }
+
+    public function whereToLocation(string $id)
+    {
+        $locations = DB::table('location_prices')
+            ->join('locations', 'location_prices.where_to', '=', 'locations.id')
+            ->select('locations.location_name', 'location_prices.where_to', 'location_prices.price')
+            ->where('location_prices.pickup_point', $id)
+            ->get();
+        if (isset($locations) && sizeof($locations)>0){
+            return response()->json($locations);
+        }else{
+            return response()->json("Location Not Found.");
+        }
     }
 }
