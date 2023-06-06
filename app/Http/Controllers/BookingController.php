@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Booking;
 use App\Models\Location;
 use App\Models\LocationPrice;
 use App\Models\User;
@@ -16,15 +17,14 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $query = DB::table('bookings')
-            ->leftJoin('location_prices as lp', 'bookings.location_price_id', '=', 'lp.id')
-            ->leftJoin('locations as pp', 'pp.id', '=', 'lp.pickup_point')
-            ->leftJoin('locations as wt', 'wt.id', '=', 'lp.where_to')
+            ->leftJoin('locations as pp', 'pp.id', '=', 'bookings.pickup_point')
+            ->leftJoin('locations as wt', 'wt.id', '=', 'bookings.where_to')
             ->leftJoin('users as pass_user', 'pass_user.id', '=', 'bookings.passenger_id')
             ->leftJoin('users as dri_user', 'dri_user.id', '=', 'bookings.driver_id')
             ->select(
                 'pass_user.name as passenger_name',
                 'dri_user.name as driver_name',
-                'lp.price',
+                'bookings.price',
                 'pp.location_name as pickup_point',
                 'wt.location_name as where_to',
                 'bookings.trip_type',
@@ -57,7 +57,21 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'passenger_id' => 'required',
+            'driver_id' => 'required',
+            'trip_type' => 'required',
+            'pickup_point' => 'required',
+            'where_to' => 'required',
+            'price' => 'required',
+            'trip_date' => 'required',
+            'trip_time' => 'required',
+        ]);
+
+        $input = $request->all();
+        $user = Booking::create($input);
+        return redirect()->route('booking.index')
+            ->with('success','Booking set successfully');
     }
 
     /**
@@ -65,7 +79,11 @@ class BookingController extends Controller
      */
     public function show(string $id)
     {
-        //
+        Booking::find($id)->update([
+            'status' => 1
+        ]);
+        return redirect()->route('booking.index')
+            ->with('success','Accepted successfully');
     }
 
     /**
@@ -73,7 +91,11 @@ class BookingController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        Booking::find($id)->update([
+            'status' => 2
+        ]);
+        return redirect()->route('booking.index')
+            ->with('success','Rejected successfully');
     }
 
     /**

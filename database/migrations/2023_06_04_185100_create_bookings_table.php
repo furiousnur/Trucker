@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('passenger_id');
             $table->unsignedBigInteger('driver_id');
-            $table->unsignedBigInteger('location_price_id');
+            $table->unsignedBigInteger('pickup_point');
+            $table->unsignedBigInteger('where_to');
+            $table->string('price');
             $table->enum( 'trip_type', ['Schedule', 'Regular']);
             $table->string('trip_date');
             $table->string('trip_time');

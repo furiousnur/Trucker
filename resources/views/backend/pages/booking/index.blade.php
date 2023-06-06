@@ -46,7 +46,9 @@
                                                 <th>Where to</th>
                                                 <th>Price</th>
                                                 <th>Status</th>
-                                                <th width="130px">Action</th>
+                                                @if(auth()->user()->user_type == 'admin')
+                                                    <th width="{{auth()->user()->user_type == 'admin' ? 220 : 150}}px">Action</th>
+                                                @endif
                                             </tr>
                                             @foreach ($data as $key => $value)
                                                 <tr>
@@ -71,10 +73,13 @@
                                                         @endif
                                                     </td>
                                                     <td>
-                                                        <a class="btn btn-primary" href="{{ route('booking.edit',$value->id) }}">Edit</a>
-                                                        {!! Form::open(['method' => 'DELETE','route' => ['booking.destroy', $value->id],'style'=>'display:inline']) !!}
-                                                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                                                        {!! Form::close() !!}
+                                                        @if(auth()->user()->user_type == 'admin')
+                                                            <a class="btn btn-danger" href="{{ route('booking.edit',$value->id) }}">Reject</a>
+                                                            <a class="btn btn-primary" href="{{ route('booking.show',$value->id) }}">Accept</a>
+                                                            {!! Form::open(['method' => 'DELETE','route' => ['booking.destroy', $value->id],'style'=>'display:inline']) !!}
+                                                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                            {!! Form::close() !!}
+                                                        @endif
                                                     </td>
                                                 </tr>
                                             @endforeach

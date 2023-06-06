@@ -57,11 +57,21 @@
                             <div class="col-xs-12 col-sm-12 col-md-{{auth()->user()->user_type == 'admin' ? 6 : 12}}">
                                 <div class="form-group">
                                     <strong>Driver:</strong>
-                                    <select required name="pickup_point" id="" class="form-control">
+                                    <select required name="driver_id" id="" class="form-control">
                                         <option value="" selected disabled readonly="">Choose Driver</option>
                                         @foreach($drivers as $driver)
                                             <option value="{{$driver->id}}">{{$driver->name}}</option>
                                         @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-6">
+                                <div class="form-group">
+                                    <strong>Trip Type:</strong>
+                                    <select required name="trip_type" id="trip_type_id" class="form-control">
+                                        <option value="" selected disabled readonly="">Choose Type</option>
+                                        <option value="Regular">Regular</option>
+                                        <option value="Schedule">Schedule</option>
                                     </select>
                                 </div>
                             </div>
@@ -84,18 +94,8 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6">
                                 <div class="form-group">
-                                    <strong>Price:</strong>
-                                    <input type="text" class="form-control" name="price" id="price" placeholder="Price" required>
-                                </div>
-                            </div>
-                            <div class="col-xs-12 col-sm-12 col-md-6">
-                                <div class="form-group">
-                                    <strong>Trip Type:</strong>
-                                    <select required name="trip_type" id="" class="form-control">
-                                        <option value="" selected disabled readonly="">Choose Type</option>
-                                        <option value="Regular">Regular</option>
-                                        <option value="Schedule">Schedule</option>
-                                    </select>
+                                    <strong>Amount:</strong>
+                                    <input type="text" class="form-control" name="price" id="price" placeholder="Amount" @if(auth()->user()->user_type != 'admin') readonly @endif required>
                                 </div>
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-6">
@@ -146,16 +146,29 @@
             });
         });
         document.getElementById('where_to_id').addEventListener('change', function () {
+            var trip_type_id = document.getElementById('trip_type_id').value;
             var where_to_id = document.getElementById('where_to_id').value;
             var pickup_point_id = document.getElementById('pickup_point_id').value;
             $.ajax({
-                url:"{{url('where-to-price')}}/"+where_to_id+"/"+pickup_point_id,
+                url: "{{url('where-to-price')}}/" + where_to_id + "/" + pickup_point_id,
                 type: "get",
-                data: { },
-                success: function(response) {
-                    document.getElementById('price').value = response.price;
+                data: {},
+                success: function (response) {
+                    var price = parseFloat(response.price);
+                    if (!isNaN(price)) {
+                        if (trip_type_id === 'Schedule') {
+                            var updatedPrice = price + (price * 0.10);
+                            document.getElementById('price').value = updatedPrice.toFixed(2);
+                        } else {
+                            document.getElementById('price').value = price.toFixed(2);
+                        }
+                    }
                 }
             });
+        });
+
+        document.getElementById('trip_type_id').addEventListener('change', function () {
+            document.getElementById('where_to_id').value = '';
         });
     </script>
 @endsection
