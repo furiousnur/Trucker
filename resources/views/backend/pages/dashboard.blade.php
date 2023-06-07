@@ -12,34 +12,34 @@
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-3">
-                <div class="widget-small primary coloured-icon"><i class="icon fa fa-money fa-3x"></i>
+                <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                     <div class="info">
                         <h4>Total User</h4>
-                        <p><b>5</b></p>
+                        <p><b>{{$totalUser}}</b></p>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="widget-small info coloured-icon"><i class="icon fa fa-money fa-3x"></i>
+                <div class="widget-small info coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                     <div class="info">
-                        <h4>Total Invoice</h4>
-                        <p><b>25</b></p>
+                        <h4>Total Passenger</h4>
+                        <p><b>{{$totalPassenger}}</b></p>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="widget-small warning coloured-icon"><i class="icon fa fa-files-o fa-3x"></i>
+                <div class="widget-small warning coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                     <div class="info">
-                        <h4>Total Product</h4>
-                        <p><b>10</b></p>
+                        <h4>Total Driver</h4>
+                        <p><b>{{$totalDriver}}</b></p>
                     </div>
                 </div>
             </div>
             <div class="col-md-6 col-lg-3">
-                <div class="widget-small danger coloured-icon"><i class="icon fa fa-star fa-3x"></i>
+                <div class="widget-small danger coloured-icon"><i class="icon fa fa-location-arrow fa-3x"></i>
                     <div class="info">
-                        <h4>Total Customer</h4>
-                        <p><b>500</b></p>
+                        <h4>Total Location</h4>
+                        <p><b>{{$totalLocation}}</b></p>
                     </div>
                 </div>
             </div>

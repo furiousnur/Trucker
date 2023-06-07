@@ -36,26 +36,6 @@ class PermissionSeeder extends Seeder
                 'guard_name' => 'web'
             ],
             [
-                'name' => 'system-sidebar',
-                'guard_name' => 'web'
-            ],
-            [
-                'name' => 'invoice-sidebar',
-                'guard_name' => 'web'
-            ],
-            [
-                'name' => 'invoice-report-sidebar',
-                'guard_name' => 'web'
-            ],
-            [
-                'name' => 'customer-sidebar',
-                'guard_name' => 'web'
-            ],
-            [
-                'name' => 'products-sidebar',
-                'guard_name' => 'web'
-            ],
-            [
                 'name' => 'dashboard-sidebar',
                 'guard_name' => 'web'
             ],
@@ -77,6 +57,18 @@ class PermissionSeeder extends Seeder
             ],
             [
                 'name' => 'driver-sidebar',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'add-booking',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'add-location',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'set-location-price',
                 'guard_name' => 'web'
             ]
         ]);

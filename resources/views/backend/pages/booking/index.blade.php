@@ -15,9 +15,11 @@
                 <div class="pull-left">
                     <h2>Booking List Management</h2>
                 </div>
-                <div class="pull-right">
-                    <a class="btn btn-success" href="{{ route('booking.create') }}"> New Booking</a>
-                </div>
+                @can('add-booking')
+                    <div class="pull-right">
+                        <a class="btn btn-success" href="{{ route('booking.create') }}"> New Booking</a>
+                    </div>
+                @endif
             </div>
         </div>
         @if ($message = Session::get('success'))

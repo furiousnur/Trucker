@@ -15,9 +15,11 @@
                 <div class="pull-left">
                     <h2>Location Management</h2>
                 </div>
-                <div class="pull-right">
-                    <a class="btn btn-success" href="{{ route('location.create') }}"> Create New Location</a>
-                </div>
+                @can('location-price-sidebar')
+                    <div class="pull-right">
+                        <a class="btn btn-success" href="{{ route('location.create') }}"> Create New Location</a>
+                    </div>
+                @endif
             </div>
         </div>
         @if ($message = Session::get('success'))
