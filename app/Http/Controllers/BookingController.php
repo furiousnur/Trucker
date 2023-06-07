@@ -76,7 +76,7 @@ class BookingController extends Controller
         $input = $request->all();
         $user = Booking::create($input);
         return redirect()->route('booking.index')
-            ->with('success','Booking set successfully');
+            ->with('success','Booking Set Successfully and Waiting for Accept');
     }
 
     /**

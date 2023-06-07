@@ -49,6 +49,12 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
+                                    <strong>User Type:</strong>
+                                    {!! Form::text('user_type', null, array('placeholder' => 'User Type','class' => 'form-control', 'readonly')) !!}
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
                                     <strong>Password:</strong>
                                     {!! Form::password('password', array('placeholder' => 'Password','class' => 'form-control')) !!}
                                 </div>

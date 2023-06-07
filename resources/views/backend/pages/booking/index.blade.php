@@ -41,9 +41,10 @@
                                                 <th>No</th>
                                                 @if(auth()->user()->user_type == 'driver')
                                                     <th>Passenger Name</th>
-                                                @endif
-                                                @if(auth()->user()->user_type == 'passenger')
+                                                @elseif(auth()->user()->user_type == 'passenger')
                                                     <th>Driver Name</th>
+                                                @else
+                                                    <th>Name</th>
                                                 @endif
                                                 <th>Trip Type</th>
                                                 <th>Pickup Point</th>
@@ -60,12 +61,16 @@
                                             @foreach ($data as $key => $value)
                                                 <tr>
                                                     <td>{{ ++$i }}</td>
-                                                    @if(auth()->user()->user_type == 'driver')
-                                                        <td>{{ $value->passenger_name }}</td>
-                                                    @endif
-                                                    @if(auth()->user()->user_type == 'passenger')
-                                                        <td>{{ $value->driver_name }}</td>
-                                                    @endif
+                                                    <td>
+                                                        @if(auth()->user()->user_type == 'driver')
+                                                            {{ $value->passenger_name }}
+                                                        @elseif(auth()->user()->user_type == 'passenger')
+                                                            {{ $value->driver_name }}
+                                                        @else
+                                                            <span>Driver: {{ $value->driver_name }}</span><br>
+                                                            <span>Passenger: {{ $value->passenger_name }}</span>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ $value->trip_type }}</td>
                                                     <td>{{ $value->pickup_point ?? '' }}</td>
                                                     <td>{{ $value->where_to ?? ''}}</td>
