@@ -42,15 +42,16 @@
                                                 <th>Passenger Name</th>
                                                 <th>Driver Name</th>
                                                 <th>Trip Type</th>
-                                                <th>Date</th>
-                                                <th>Time</th>
                                                 <th>Pickup Point</th>
                                                 <th>Where to</th>
                                                 <th>Price</th>
+                                                <th>Contact Number</th>
+                                                <th>Date</th>
+                                                <th>Time</th>
                                                 <th>Status</th>
-                                                @if(auth()->user()->user_type == 'admin')
+                                                @canany(['accept-booking', 'reject-booking', 'delete-booking'])
                                                     <th width="{{auth()->user()->user_type == 'admin' ? 220 : 150}}px">Action</th>
-                                                @endif
+                                                @endcanany
                                             </tr>
                                             @foreach ($data as $key => $value)
                                                 <tr>
@@ -58,11 +59,21 @@
                                                     <td>{{ $value->passenger_name }}</td>
                                                     <td>{{ $value->driver_name }}</td>
                                                     <td>{{ $value->trip_type }}</td>
-                                                    <td>{{ $value->trip_date }}</td>
-                                                    <td>{{ $value->trip_time }}</td>
                                                     <td>{{ $value->pickup_point ?? '' }}</td>
                                                     <td>{{ $value->where_to ?? ''}}</td>
                                                     <td>{{ $value->price }}</td>
+                                                    <td>
+                                                        @if(auth()->user()->user_type == 'driver')
+                                                            {{ $value->passenger_number }}
+                                                        @elseif(auth()->user()->user_type == 'passenger')
+                                                            {{ $value->driver_number }}
+                                                        @else
+                                                            <span>Driver: {{ $value->driver_number }}</span><br>
+                                                            <span>Passenger: {{ $value->passenger_number }}</span>
+                                                        @endif
+                                                    </td>
+                                                    <td>{{ $value->trip_date }}</td>
+                                                    <td>{{ $value->trip_time }}</td>
                                                     <td>
                                                         @if($value->status == 0)
                                                             <span class="badge badge-primary">Pending</span>
@@ -74,15 +85,21 @@
                                                             <span class="badge badge-success">Success</span>
                                                         @endif
                                                     </td>
-                                                    <td>
-                                                        @if(auth()->user()->user_type == 'admin')
-                                                            <a class="btn btn-danger" href="{{ route('booking.edit',$value->id) }}">Reject</a>
-                                                            <a class="btn btn-primary" href="{{ route('booking.show',$value->id) }}">Accept</a>
-                                                            {!! Form::open(['method' => 'DELETE','route' => ['booking.destroy', $value->id],'style'=>'display:inline']) !!}
-                                                            {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                                                            {!! Form::close() !!}
-                                                        @endif
-                                                    </td>
+                                                    @canany(['accept-booking', 'reject-booking', 'delete-booking'])
+                                                        <td>
+                                                            @can('reject-booking')
+                                                                <a class="btn btn-danger" href="{{ route('booking.edit',$value->id) }}">Reject</a>
+                                                            @endcan
+                                                            @can('accept-booking')
+                                                                <a class="btn btn-primary" href="{{ route('booking.show',$value->id) }}">Accept</a>
+                                                            @endcan
+                                                            @can('delete-booking')
+                                                                {!! Form::open(['method' => 'DELETE','route' => ['booking.destroy', $value->id],'style'=>'display:inline']) !!}
+                                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                                {!! Form::close() !!}
+                                                            @endcan
+                                                        </td>
+                                                    @endcanany
                                                 </tr>
                                             @endforeach
                                         </table>

@@ -19,7 +19,7 @@
                     <div class="pull-right">
                         <a class="btn btn-success" href="{{ route('location.create') }}"> Create New Location</a>
                     </div>
-                @endif
+                @endcan
             </div>
         </div>
         @if ($message = Session::get('success'))
@@ -40,18 +40,26 @@
                                             <tr>
                                                 <th>No</th>
                                                 <th>Location Name</th>
-                                                <th width="280px">Action</th>
+                                                @canany(['edit-location', 'delete-location'])
+                                                    <th width="280px">Action</th>
+                                                @endcanany
                                             </tr>
                                             @foreach ($data as $key => $location)
                                                 <tr>
                                                     <td>{{ ++$i }}</td>
                                                     <td>{{ $location->location_name }}</td>
-                                                    <td>
-                                                        <a class="btn btn-primary" href="{{ route('location.edit',$location->id) }}">Edit</a>
-                                                        {!! Form::open(['method' => 'DELETE','route' => ['location.destroy', $location->id],'style'=>'display:inline']) !!}
-                                                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                                                        {!! Form::close() !!}
-                                                    </td>
+                                                    @canany(['edit-location', 'delete-location'])
+                                                        <td>
+                                                            @can('edit-location')
+                                                                <a class="btn btn-primary" href="{{ route('location.edit',$location->id) }}">Edit</a>
+                                                            @endcan
+                                                            @can('delete-location')
+                                                                {!! Form::open(['method' => 'DELETE','route' => ['location.destroy', $location->id],'style'=>'display:inline']) !!}
+                                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                                {!! Form::close() !!}
+                                                            @endcan
+                                                        </td>
+                                                    @endcanany
                                                 </tr>
                                             @endforeach
                                         </table>

@@ -66,9 +66,32 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'add-location',
                 'guard_name' => 'web'
+            ],[
+                'name' => 'edit-location',
+                'guard_name' => 'web'
+            ],[
+                'name' => 'delete-location',
+                'guard_name' => 'web'
+            ],[
+                'name' => 'edit-location-price',
+                'guard_name' => 'web'
+            ],[
+                'name' => 'delete-location-price',
+                'guard_name' => 'web'
             ],
             [
                 'name' => 'set-location-price',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'reject-booking',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'accept-booking',
+                'guard_name' => 'web'
+            ],[
+                'name' => 'delete-booking',
                 'guard_name' => 'web'
             ]
         ]);

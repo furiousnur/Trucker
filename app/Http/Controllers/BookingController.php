@@ -16,6 +16,7 @@ class BookingController extends Controller
      */
     public function index(Request $request)
     {
+        $userType = auth()->user()->user_type;
         $query = DB::table('bookings')
             ->leftJoin('locations as pp', 'pp.id', '=', 'bookings.pickup_point')
             ->leftJoin('locations as wt', 'wt.id', '=', 'bookings.where_to')
@@ -23,7 +24,9 @@ class BookingController extends Controller
             ->leftJoin('users as dri_user', 'dri_user.id', '=', 'bookings.driver_id')
             ->select(
                 'pass_user.name as passenger_name',
+                'pass_user.phone_number as passenger_number',
                 'dri_user.name as driver_name',
+                'dri_user.phone_number as driver_number',
                 'bookings.price',
                 'pp.location_name as pickup_point',
                 'wt.location_name as where_to',
@@ -31,9 +34,15 @@ class BookingController extends Controller
                 'bookings.trip_date',
                 'bookings.trip_time',
                 'bookings.status',
-                'bookings.id'
-            )
-            ->orderBy('bookings.id', 'DESC');
+                'bookings.id',
+                'bookings.driver_id'
+            )->orderBy('bookings.id', 'DESC');
+        if ($userType == 'driver'){
+            $query = $query->where('bookings.driver_id',auth()->id());
+        }
+        if ($userType == 'passenger'){
+            $query = $query->where('bookings.passenger_id',auth()->id());
+        }
         $data = $query->paginate(15);
         return view('backend.pages.booking.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 5);
     }

@@ -42,7 +42,9 @@
                                                 <th>Pickup Point</th>
                                                 <th>Where to</th>
                                                 <th>Price</th>
-                                                <th width="280px">Action</th>
+                                                @canany(['edit-location-price', 'delete-location-price'])
+                                                    <th width="280px">Action</th>
+                                                @endcanany
                                             </tr>
                                             @foreach ($data as $key => $value)
                                                 <tr>
@@ -50,12 +52,18 @@
                                                     <td>{{ $value->pickup_point }}</td>
                                                     <td>{{ $value->where_to }}</td>
                                                     <td>{{ $value->price }}</td>
-                                                    <td>
-                                                        <a class="btn btn-primary" href="{{ route('location-price.edit',$value->id) }}">Edit</a>
-                                                        {!! Form::open(['method' => 'DELETE','route' => ['location-price.destroy', $value->id],'style'=>'display:inline']) !!}
-                                                        {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                                                        {!! Form::close() !!}
-                                                    </td>
+                                                    @canany(['edit-location-price', 'delete-location-price'])
+                                                        <td>
+                                                            @can('edit-location-price')
+                                                                <a class="btn btn-primary" href="{{ route('location-price.edit',$value->id) }}">Edit</a>
+                                                            @endcan
+                                                            @can('delete-location-price')
+                                                                {!! Form::open(['method' => 'DELETE','route' => ['location-price.destroy', $value->id],'style'=>'display:inline']) !!}
+                                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                                {!! Form::close() !!}
+                                                            @endcan
+                                                        </td>
+                                                    @endcanany
                                                 </tr>
                                             @endforeach
                                         </table>
