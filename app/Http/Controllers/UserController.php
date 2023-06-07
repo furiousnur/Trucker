@@ -22,6 +22,18 @@ class UserController extends Controller
         return view('backend.pages.users.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 5);
     }
 
+    public function driverList(Request $request)
+    {
+        $data = User::orderBy('id','DESC')->where('user_type', 'driver')->paginate(5);
+        return view('backend.pages.users.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+
+    public function passengerList(Request $request)
+    {
+        $data = User::orderBy('id','DESC')->where('user_type', 'passenger')->paginate(5);
+        return view('backend.pages.users.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 5);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

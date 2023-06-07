@@ -70,6 +70,14 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'booking-sidebar',
                 'guard_name' => 'web'
+            ],
+            [
+                'name' => 'passenger-sidebar',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'driver-sidebar',
+                'guard_name' => 'web'
             ]
         ]);
     }

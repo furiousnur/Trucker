@@ -111,7 +111,9 @@ class BookingController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Booking::find($id)->delete();
+        return redirect()->route('booking.index')
+            ->with('success','Booking deleted successfully');
     }
 
     public function whereToPrice(string $whereToId, $PickupPointId)

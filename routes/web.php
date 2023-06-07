@@ -33,9 +33,12 @@ Route::group(['middleware' => ['auth']], function() {
     //Role Permission Routes
     Route::resource('/roles', RoleController::class);
     Route::resource('/users', UserController::class);
+    Route::resource('/users', UserController::class);
     Route::resource('/location', LocationController::class);
     Route::resource('/location-price', LocationPriceController::class);
     Route::resource('/booking', BookingController::class);
     Route::get('/where-to-locations/{id}', [BookingController::class, 'whereToLocation']);
     Route::get('/where-to-price/{whereToId}/{PickupPointId}', [BookingController::class, 'whereToPrice']);
+    Route::get('/driver-list', [UserController::class, 'driverList'])->name('driver.list');
+    Route::get('/passenger-list', [UserController::class, 'passengerList'])->name('passenger.list');
 });
