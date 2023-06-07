@@ -50,21 +50,21 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="col-xs-12 col-sm-12 col-md-{{auth()->user()->user_type == 'admin' ? 6 : 12}}">
+                                    <div class="form-group">
+                                        <strong>Driver:</strong>
+                                        <select required name="driver_id" id="" class="form-control">
+                                            <option value="" selected disabled readonly="">Choose Driver</option>
+                                            @foreach($drivers as $driver)
+                                                <option value="{{$driver->id}}">{{$driver->name}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             @else
                                 <input type="hidden" name="passenger_id" value="{{auth()->id()}}">
                             @endif
 
-                            <div class="col-xs-12 col-sm-12 col-md-{{auth()->user()->user_type == 'admin' ? 6 : 12}}">
-                                <div class="form-group">
-                                    <strong>Driver:</strong>
-                                    <select required name="driver_id" id="" class="form-control">
-                                        <option value="" selected disabled readonly="">Choose Driver</option>
-                                        @foreach($drivers as $driver)
-                                            <option value="{{$driver->id}}">{{$driver->name}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
                             <div class="col-xs-12 col-sm-12 col-md-6">
                                 <div class="form-group">
                                     <strong>Trip Type:</strong>
@@ -80,8 +80,8 @@
                                     <strong>Pickup Point:</strong>
                                     <select required name="pickup_point" id="pickup_point_id" class="form-control">
                                         <option value="" selected disabled readonly="">Choose Location</option>
-                                        @foreach($pickupPoints as $location)
-                                            <option value="{{$location->id}}">{{$location->pickup_point}}</option>
+                                        @foreach($locations as $location)
+                                            <option value="{{$location->id}}">{{$location->location_name}}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -137,8 +137,8 @@
                         document.getElementById('errorMsg').style.display = 'none';
                         var select = $('#where_to_id');
                         select.empty();
+                        select.append($('<option value="" selected disabled readonly="">Choose Location</option>'));
                         $.each(response, function(index, option) {
-                            select.append($('<option value="" selected disabled readonly="">Choose Location</option>'));
                             select.append($('<option></option>').attr('value', option.where_to).text(option.location_name));
                         });
                     }

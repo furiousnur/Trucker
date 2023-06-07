@@ -15,7 +15,7 @@
                 <div class="pull-left">
                     <h2>Location Management</h2>
                 </div>
-                @can('location-price-sidebar')
+                @can('add-location')
                     <div class="pull-right">
                         <a class="btn btn-success" href="{{ route('location.create') }}"> Create New Location</a>
                     </div>

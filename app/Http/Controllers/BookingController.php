@@ -38,13 +38,13 @@ class BookingController extends Controller
                 'bookings.driver_id'
             )->orderBy('bookings.id', 'DESC');
         if ($userType == 'driver'){
-            $query = $query->where('bookings.driver_id',auth()->id());
+            $query = $query->where('bookings.driver_id',auth()->id())->orWhere('bookings.status',0);
         }
         if ($userType == 'passenger'){
             $query = $query->where('bookings.passenger_id',auth()->id());
         }
-        $data = $query->paginate(15);
-        return view('backend.pages.booking.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 5);
+        $data = $query->paginate(10);
+        return view('backend.pages.booking.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 10);
     }
 
     /**
@@ -54,11 +54,8 @@ class BookingController extends Controller
     {
         $passengers = User::latest()->where('user_type', 'passenger')->get();
         $drivers = User::latest()->where('user_type', 'driver')->get();
-        $pickupPoints = DB::table('location_prices as lp')
-            ->leftJoin('locations as pp', 'pp.id', '=', 'lp.pickup_point')
-            ->select('pp.location_name as pickup_point', 'lp.price', 'lp.id')
-            ->orderBy('lp.id', 'DESC')->get();
-        return view('backend.pages.booking.create',compact('pickupPoints','passengers','drivers'));
+        $locations = Location::latest()->get();
+        return view('backend.pages.booking.create',compact('passengers','drivers', 'locations'));
     }
 
     /**
@@ -68,7 +65,6 @@ class BookingController extends Controller
     {
         $this->validate($request, [
             'passenger_id' => 'required',
-            'driver_id' => 'required',
             'trip_type' => 'required',
             'pickup_point' => 'required',
             'where_to' => 'required',
@@ -89,10 +85,21 @@ class BookingController extends Controller
     public function show(string $id)
     {
         Booking::find($id)->update([
-            'status' => 1
+            'status' => 1,
+            'driver_id'=>auth()->id()
         ]);
         return redirect()->route('booking.index')
             ->with('success','Accepted successfully');
+    }
+
+    public function tripStatus(string $id, $statusId)
+    {
+        Booking::find($id)->update([
+            'status' => $statusId,
+            'driver_id'=>auth()->id()
+        ]);
+        return redirect()->route('booking.index')
+            ->with('success','Booking status updated successfully');
     }
 
     /**
@@ -101,7 +108,8 @@ class BookingController extends Controller
     public function edit(string $id)
     {
         Booking::find($id)->update([
-            'status' => 2
+            'status' => 2,
+            'driver_id'=>auth()->id()
         ]);
         return redirect()->route('booking.index')
             ->with('success','Rejected successfully');

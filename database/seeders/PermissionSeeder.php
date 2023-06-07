@@ -62,6 +62,9 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'add-booking',
                 'guard_name' => 'web'
+            ],[
+                'name' => 'cancel-booking',
+                'guard_name' => 'web'
             ],
             [
                 'name' => 'add-location',
