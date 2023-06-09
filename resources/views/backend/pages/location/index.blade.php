@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-lg-12 margin-tb">
                 <div class="pull-left">
-                    <h2>Location Management</h2>
+                    <h2>Location List</h2>
                 </div>
                 @can('add-location')
                     <div class="pull-right">

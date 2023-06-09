@@ -163,18 +163,11 @@
     <!-- about section -->
     <div id="about" class="about ">
         <div class="container">
-            <div class="row d_flex">
-                <div class="col-md-6">
-                    <div class="about_right">
-                        <figure><img src="{{asset('front-assets/images/about.png')}}" alt="#"/></figure>
-                    </div>
-                </div>
-                <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
                     <div class="titlepage">
-                        <h2>About Us</h2>
-                        <p> There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, There
-                        </p>
-                        <a class="read_more" href="#">Read More</a>
+                        <h2 style="text-align: center">About Us</h2>
+                        <p>There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, There </p>
                     </div>
                 </div>
             </div>
@@ -358,7 +351,6 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="testimonial_box">
-                                                    <figure><img src="{{asset('front-assets/images/our.png')}}" alt="#"/></figure>
                                                     <h3>Luda Johnson <br><span class="kisu">( Ceo)</span></h3>
                                                     <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 year</p>
                                                 </div>
@@ -373,7 +365,6 @@
                                         <div class="row">
                                             <div class="col-md-12">
                                                 <div class="testimonial_box">
-                                                    <figure><img src="{{asset('front-assets/images/our.png')}}" alt="#"/></figure>
                                                     <h3>Luda Johnson <br><span class="kisu">( Ceo)</span></h3>
                                                     <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 year</p>
                                                 </div>
@@ -389,7 +380,6 @@
                                             <div class="col-md-12">
                                                 <div class="full cross_layout">
                                                     <div class="testimonial_box">
-                                                        <figure><img src="{{asset('front-assets/images/our.png')}}" alt="#"/></figure>
                                                         <h3>Luda Johnson <br><span class="kisu">( Ceo)</span></h3>
                                                         <p>Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 year</p>
                                                     </div>

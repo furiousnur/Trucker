@@ -17,7 +17,8 @@
                 </div>
                 <div class="col-md-8">
                     <div class="map">
-                        <figure><img src="{{asset('front-assets/images/map.png')}}" alt="#"/></figure>
+                        <figure><img style="height: 400px;" src="{{asset('front-assets/images/ubermap.jpg')}}" alt="#"/></figure>
+{{--                        <figure><img src="{{asset('front-assets/images/map.png')}}" alt="#"/></figure>--}}
                     </div>
                 </div>
             </div>

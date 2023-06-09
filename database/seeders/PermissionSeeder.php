@@ -96,6 +96,9 @@ class PermissionSeeder extends Seeder
             ],[
                 'name' => 'delete-booking',
                 'guard_name' => 'web'
+            ],[
+                'name' => 'payment-sidebar',
+                'guard_name' => 'web'
             ]
         ]);
     }

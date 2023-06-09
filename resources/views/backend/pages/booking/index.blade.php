@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-lg-12 margin-tb">
                 <div class="pull-left">
-                    <h2>Booking List Management</h2>
+                    <h2>Booking List</h2>
                 </div>
                 @can('add-booking')
                     <div class="pull-right">
@@ -49,14 +49,12 @@
                                                 <th>Trip Type</th>
                                                 <th>Pickup Point</th>
                                                 <th>Where to</th>
-                                                <th>Price</th>
+                                                <th>Amount</th>
                                                 <th>Contact Number</th>
                                                 <th>Trip Date</th>
                                                 <th>Trip Time</th>
                                                 <th>Status</th>
-                                                @canany(['accept-booking', 'reject-booking', 'delete-booking'])
-                                                    <th width="{{auth()->user()->user_type == 'admin' ? 220 : 150}}px">Action</th>
-                                                @endcanany
+                                                <th width="{{auth()->user()->user_type == 'admin' ? 220 : 150}}px">Action</th>
                                             </tr>
                                             @foreach ($data as $key => $value)
                                                 <tr>
@@ -99,6 +97,10 @@
                                                         @elseif($value->status == 4)
                                                             <span class="badge badge-success">Success</span>
                                                         @elseif($value->status == 5)
+                                                            <span class="badge badge-warning">Pending Payment</span>
+                                                        @elseif($value->status == 6)
+                                                            <span class="badge badge-success">Payment Success</span>
+                                                        @elseif($value->status == 9)
                                                             <span class="badge badge-danger">Cancelled</span>
                                                         @endif
                                                     </td>
@@ -106,7 +108,7 @@
                                                         <td>
                                                             @if($value->status == 0)
                                                                 @can('cancel-booking')
-                                                                    <a class="btn btn-danger" href="{{ route('booking.tripStatus',[$value->id, 5]) }}">Cancel</a>
+                                                                    <a class="btn btn-danger" href="{{ route('booking.tripStatus',[$value->id, 9]) }}">Cancel</a>
                                                                 @endcan
                                                                 @can('accept-booking')
                                                                     <a class="btn btn-primary" href="{{ route('booking.tripStatus',[$value->id, 1]) }}">Accept</a>
@@ -114,15 +116,23 @@
                                                                 @can('reject-booking')
                                                                     <a class="btn btn-danger" href="{{ route('booking.tripStatus',[$value->id, 2]) }}">Reject</a>
                                                                 @endcan
-                                                            @elseif($value->status == 1 && auth()->user()->user_type != 'passenger')
-                                                                <a class="btn btn-primary" href="{{ route('booking.tripStatus',[$value->id, 3]) }}">Trip Start</a>
-                                                            @elseif($value->status == 3 && auth()->user()->user_type != 'passenger')
-                                                                <a class="btn btn-primary" href="{{ route('booking.tripStatus', [$value->id, 4]) }}">Trip Finish</a>
+                                                            @elseif(auth()->user()->user_type != 'passenger')
+                                                                @if($value->status == 1)
+                                                                    <a class="btn btn-primary" href="{{ route('booking.tripStatus',[$value->id, 3]) }}">Trip Start</a>
+                                                                @elseif($value->status == 3)
+                                                                    <a class="btn btn-primary" href="{{ route('booking.tripStatus', [$value->id, 4]) }}">Trip Finish</a>
+                                                                @elseif($value->status == 4)
+                                                                    <a class="btn btn-info" href="{{ route('booking.tripStatus', [$value->id, 5]) }}">Payment Request</a>
+                                                                @endif
+                                                            @elseif(auth()->user()->user_type == 'passenger' && $value->status == 5)
+                                                                <a class="btn btn-primary" href="{{ route('booking.tripStatus',[$value->id, 6]) }}">Bill Pay</a>
                                                             @endif
                                                             @can('delete-booking')
-                                                                {!! Form::open(['method' => 'DELETE','route' => ['booking.destroy', $value->id],'style'=>'display:inline']) !!}
-                                                                {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
-                                                                {!! Form::close() !!}
+                                                                @if($value->status != 6)
+                                                                    {!! Form::open(['method' => 'DELETE','route' => ['booking.destroy', $value->id],'style'=>'display:inline']) !!}
+                                                                    {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
+                                                                    {!! Form::close() !!}
+                                                                @endif
                                                             @endcan
                                                         </td>
                                                     @endcanany

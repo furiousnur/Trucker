@@ -70,8 +70,8 @@
                                     <strong>Trip Type:</strong>
                                     <select required name="trip_type" id="trip_type_id" class="form-control">
                                         <option value="" selected disabled readonly="">Choose Type</option>
-                                        <option value="Regular">Regular</option>
                                         <option value="Schedule">Schedule</option>
+                                        <option value="Urgent">Urgent</option>
                                     </select>
                                 </div>
                             </div>
@@ -156,7 +156,7 @@
                 success: function (response) {
                     var price = parseFloat(response.price);
                     if (!isNaN(price)) {
-                        if (trip_type_id === 'Schedule') {
+                        if (trip_type_id === 'Urgent') {
                             var updatedPrice = price + (price * 0.10);
                             document.getElementById('price').value = updatedPrice.toFixed(2);
                         } else {

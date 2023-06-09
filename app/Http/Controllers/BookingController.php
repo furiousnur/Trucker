@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Location;
-use App\Models\LocationPrice;
+use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -47,6 +47,43 @@ class BookingController extends Controller
         return view('backend.pages.booking.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 10);
     }
 
+    public function paymentList(Request $request)
+    {
+        $userType = auth()->user()->user_type;
+        $query = DB::table('bookings')
+            ->leftJoin('payments', 'bookings.id', '=', 'payments.booking_id')
+            ->leftJoin('locations as pp', 'pp.id', '=', 'bookings.pickup_point')
+            ->leftJoin('locations as wt', 'wt.id', '=', 'bookings.where_to')
+            ->leftJoin('users as pass_user', 'pass_user.id', '=', 'bookings.passenger_id')
+            ->leftJoin('users as dri_user', 'dri_user.id', '=', 'bookings.driver_id')
+            ->select(
+                'bookings.id',
+                'pass_user.name as passenger_name',
+                'pass_user.phone_number as passenger_number',
+                'dri_user.name as driver_name',
+                'dri_user.phone_number as driver_number',
+                'bookings.price',
+                'pp.location_name as pickup_point',
+                'wt.location_name as where_to',
+                'bookings.trip_type',
+                'bookings.trip_time',
+                'bookings.status as booking_status',
+                'bookings.driver_id',
+                'payments.*',
+            )
+            ->orderBy('bookings.id', 'DESC')
+            ->where('bookings.status', 6);
+            if ($userType == 'driver'){
+                $query = $query->where('bookings.driver_id',auth()->id());
+            }
+            if ($userType == 'passenger'){
+                $query = $query->where('bookings.passenger_id',auth()->id());
+            }
+        $data = $query->paginate(10);
+
+        return view('backend.pages.booking.payment-list',compact('data'))->with('i', ($request->input('page', 1) - 1) * 10);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -74,7 +111,7 @@ class BookingController extends Controller
         ]);
 
         $input = $request->all();
-        $user = Booking::create($input);
+        Booking::create($input);
         return redirect()->route('booking.index')
             ->with('success','Booking Set Successfully and Waiting for Accept');
     }
@@ -94,6 +131,10 @@ class BookingController extends Controller
 
     public function tripStatus(string $id, $statusId)
     {
+        if ($statusId == 6){
+            $booking = Booking::find($id);
+            return view('backend.pages.booking.payment',compact('booking'));
+        }
         Booking::find($id)->update([
             'status' => $statusId,
             'driver_id'=>auth()->id()
@@ -113,6 +154,42 @@ class BookingController extends Controller
         ]);
         return redirect()->route('booking.index')
             ->with('success','Rejected successfully');
+    }
+
+    public function billPay(Request $request, $id)
+    {
+
+        $this->validate($request, [
+            'amount' => 'required',
+            'payment_date' => 'required',
+            'payment_type' => 'required',
+        ]);
+        if ($request->payment_type == 'Bkash'){
+            $this->validate($request, [
+                'p_bkash_number' => 'required',
+                'b_ref_number' => 'required',
+            ]);
+        }
+        if ($request->payment_type == 'Nagad'){
+            $this->validate($request, [
+                'p_nagad_number' => 'required',
+                'n_ref_number' => 'required',
+            ]);
+        }
+        if ($request->payment_type == 'Card'){
+            $this->validate($request, [
+                'card_number' => 'required',
+                'card_name' => 'required',
+            ]);
+        }
+
+        $input = $request->all();
+        Payment::create($input);
+        Booking::find($id)->update([
+            'status' => 6
+        ]);
+        return redirect()->route('booking.index')
+            ->with('success','Payment Successfully and Thank you.');
     }
 
     /**

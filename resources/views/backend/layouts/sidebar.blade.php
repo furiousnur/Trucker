@@ -1,6 +1,7 @@
 <div class="app-sidebar__overlay" data-toggle="sidebar"></div>
 <aside class="app-sidebar">
     <ul class="app-menu">
+        <li><a class="app-menu__item" href="{{route('front.home')}}" target="_blank"><i class="app-menu__icon fa fa-home"></i><span class="app-menu__label">Home Page</span></a></li>
         @can('dashboard-sidebar')
             <li>
                 <a class="app-menu__item {{ Request::segment(1) == 'dashboard'  ? 'active' : ''}}" href="{{route('dashboard')}}">
@@ -16,6 +17,9 @@
         @endcan
         @can('booking-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'booking'  ? 'active' : ''}}" href="{{route('booking.index')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Booking List</span></a></li>
+        @endcan
+        @can('payment-sidebar')
+            <li><a class="app-menu__item {{ Request::segment(1) == 'payment-list'  ? 'active' : ''}}" href="{{route('payment.list')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Payment List</span></a></li>
         @endcan
         @can('passenger-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'passenger'  ? 'active' : ''}}" href="{{route('passenger.list')}}"><i class="app-menu__icon fa fa-history"></i><span class="app-menu__label">Passengers</span></a></li>

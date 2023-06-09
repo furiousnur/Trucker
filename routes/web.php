@@ -25,7 +25,7 @@ Auth::routes();
 Route::get('/', [App\Http\Controllers\FrontendController::class, 'home'])->name('front.home');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/registration', [LoginController::class, 'showRegistrationForm'])->name('registration');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+//Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 /*Backend Routes*/
 Route::group(['middleware' => ['auth']], function() {
@@ -40,6 +40,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/trip-status/{id}/{statusId}', [BookingController::class, 'tripStatus'])->name('booking.tripStatus');
     Route::get('/where-to-locations/{id}', [BookingController::class, 'whereToLocation']);
     Route::get('/where-to-price/{whereToId}/{PickupPointId}', [BookingController::class, 'whereToPrice']);
+    Route::post('/bill-pay/{bookingId}', [BookingController::class, 'billPay'])->name('booking.bill.pay');
     Route::get('/driver-list', [UserController::class, 'driverList'])->name('driver.list');
     Route::get('/passenger-list', [UserController::class, 'passengerList'])->name('passenger.list');
+    Route::get('/payment-list', [BookingController::class, 'paymentList'])->name('payment.list');
 });

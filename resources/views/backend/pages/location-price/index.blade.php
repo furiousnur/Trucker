@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col-lg-12 margin-tb">
                 <div class="pull-left">
-                    <h2>Location Price Management</h2>
+                    <h2>Location Price List</h2>
                 </div>
                 @can('set-location-price')
                     <div class="pull-right">
