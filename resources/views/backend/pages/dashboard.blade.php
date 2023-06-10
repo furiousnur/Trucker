@@ -11,7 +11,7 @@
             </ul>
         </div>
         <div class="row">
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-6">
                 <div class="widget-small primary coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                     <div class="info">
                         <h4>Total User</h4>
@@ -19,7 +19,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-6">
                 <div class="widget-small info coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                     <div class="info">
                         <h4>Total Passenger</h4>
@@ -27,7 +27,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-6">
                 <div class="widget-small warning coloured-icon"><i class="icon fa fa-users fa-3x"></i>
                     <div class="info">
                         <h4>Total Driver</h4>
@@ -35,29 +35,11 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-6 col-lg-3">
+            <div class="col-md-6 col-lg-6">
                 <div class="widget-small danger coloured-icon"><i class="icon fa fa-location-arrow fa-3x"></i>
                     <div class="info">
                         <h4>Total Location</h4>
                         <p><b>{{$totalLocation}}</b></p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-6">
-                <div class="tile">
-                    <h3 class="tile-title">Customers</h3>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <canvas class="embed-responsive-item" id="lineChartDemo"></canvas>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="tile">
-                    <h3 class="tile-title">Support Requests</h3>
-                    <div class="embed-responsive embed-responsive-16by9">
-                        <canvas class="embed-responsive-item" id="pieChartDemo"></canvas>
                     </div>
                 </div>
             </div>
