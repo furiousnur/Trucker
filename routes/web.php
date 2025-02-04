@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LocationPriceController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -44,4 +45,6 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('/driver-list', [UserController::class, 'driverList'])->name('driver.list');
     Route::get('/passenger-list', [UserController::class, 'passengerList'])->name('passenger.list');
     Route::get('/payment-list', [BookingController::class, 'paymentList'])->name('payment.list');
+    Route::get('/settings', [SettingsController::class, 'index'])->name('settings.index');
+    Route::post('/settings', [SettingsController::class, 'store'])->name('settings.store');
 });

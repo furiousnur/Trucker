@@ -22,7 +22,7 @@
             <li><a class="app-menu__item {{ Request::segment(1) == 'payment-list'  ? 'active' : ''}}" href="{{route('payment.list')}}"><i class="app-menu__icon fa fa-paypal"></i><span class="app-menu__label">Payment List</span></a></li>
         @endcan
         @can('passenger-sidebar')
-            <li><a class="app-menu__item {{ Request::segment(1) == 'passenger'  ? 'active' : ''}}" href="{{route('passenger.list')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Passengers</span></a></li>
+            <li><a class="app-menu__item {{ Request::segment(1) == 'passenger-list'  ? 'active' : ''}}" href="{{route('passenger.list')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Passengers</span></a></li>
         @endcan
         @can('driver-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'driver-list'  ? 'active' : ''}}" href="{{route('driver.list')}}"><i class="app-menu__icon fa fa-users"></i><span class="app-menu__label">Drivers</span></a></li>
@@ -33,6 +33,8 @@
         @can('role-sidebar')
             <li><a class="app-menu__item {{ Request::segment(1) == 'roles'  ? 'active' : ''}}" href="{{route('roles.index')}}"><i class="app-menu__icon fa fa-assistive-listening-systems"></i><span class="app-menu__label">Roles</span></a></li>
         @endcan
-
+        @can('settings-sidebar')
+            <li><a class="app-menu__item {{ Request::segment(1) == 'settings'  ? 'active' : ''}}" href="{{route('settings.index')}}"><i class="app-menu__icon fa fa-assistive-listening-systems"></i><span class="app-menu__label">Settings</span></a></li>
+        @endcan
     </ul>
 </aside>

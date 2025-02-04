@@ -14,23 +14,27 @@ class PermissionSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('permissions')->insert([
-              [
-                  'name' => 'role-list',
-                  'guard_name' => 'web'
-              ],[
-                  'name' => 'role-create',
-                  'guard_name' => 'web'
-              ],[
-                  'name' => 'role-edit',
-                  'guard_name' => 'web'
-              ],[
-                  'name' => 'role-delete',
-                  'guard_name' => 'web'
-              ],[
-                  'name' => 'role-sidebar',
-                  'guard_name' => 'web'
-              ],
+        $permissions = [
+            [
+                'name' => 'role-list',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'role-create',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'role-edit',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'role-delete',
+                'guard_name' => 'web'
+            ],
+            [
+                'name' => 'role-sidebar',
+                'guard_name' => 'web'
+            ],
             [
                 'name' => 'user-sidebar',
                 'guard_name' => 'web'
@@ -62,23 +66,28 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'add-booking',
                 'guard_name' => 'web'
-            ],[
+            ],
+            [
                 'name' => 'cancel-booking',
                 'guard_name' => 'web'
             ],
             [
                 'name' => 'add-location',
                 'guard_name' => 'web'
-            ],[
+            ],
+            [
                 'name' => 'edit-location',
                 'guard_name' => 'web'
-            ],[
+            ],
+            [
                 'name' => 'delete-location',
                 'guard_name' => 'web'
-            ],[
+            ],
+            [
                 'name' => 'edit-location-price',
                 'guard_name' => 'web'
-            ],[
+            ],
+            [
                 'name' => 'delete-location-price',
                 'guard_name' => 'web'
             ],
@@ -93,13 +102,26 @@ class PermissionSeeder extends Seeder
             [
                 'name' => 'accept-booking',
                 'guard_name' => 'web'
-            ],[
+            ],
+            [
                 'name' => 'delete-booking',
                 'guard_name' => 'web'
-            ],[
+            ],
+            [
                 'name' => 'payment-sidebar',
                 'guard_name' => 'web'
+            ],
+            [
+                'name' => 'settings-sidebar',
+                'guard_name' => 'web'
             ]
-        ]);
+        ];
+
+        foreach ($permissions as $permission) {
+            DB::table('permissions')->updateOrInsert(
+                ['name' => $permission['name'], 'guard_name' => $permission['guard_name']],
+                $permission
+            );
+        }
     }
 }
