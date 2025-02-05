@@ -39,7 +39,7 @@
                                 <div class="form-group">
                                     <strong>Key:</strong>
                                     {!! Form::select('key',
-                                    ['person_rate' => 'Person', 'mini_truck_rate' => 'Mini Truck', 'large_truck_rate' => 'Large Truck'],
+                                    ['person_rate' => 'Person', 'mini_truck_rate' => 'Mini Truck', 'large_truck_rate' => 'Large Truck', 'packaging_rate' => 'Packaging'],
                                     null, ['class' => 'form-control', 'placeholder' => 'Select Key']) !!}
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                             </div>
                         </div>
                         {!! Form::close() !!}
-                        
+
                         <h2>Current Settings</h2>
                         <table class="table">
                             <thead>

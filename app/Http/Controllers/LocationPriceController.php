@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Location;
 use App\Models\LocationPrice;
+use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -17,7 +18,7 @@ class LocationPriceController extends Controller
         $query = DB::table('location_prices as lp')
             ->leftJoin('locations as pp', 'pp.id', '=', 'lp.pickup_point')
             ->leftJoin('locations as wt', 'wt.id', '=', 'lp.where_to')
-            ->select('pp.location_name as pickup_point', 'wt.location_name as where_to', 'lp.price', 'lp.id')
+            ->select('pp.location_name as pickup_point', 'wt.location_name as where_to', 'lp.price', 'lp.id', 'lp.settings_truck_key', 'lp.settings_truck_value')
             ->orderBy('lp.id', 'DESC');
         $data = $query->paginate(15);
         return view('backend.pages.location-price.index',compact('data'))->with('i', ($request->input('page', 1) - 1) * 5);
@@ -29,7 +30,8 @@ class LocationPriceController extends Controller
     public function create()
     {
         $locations = Location::all();
-        return view('backend.pages.location-price.create',compact('locations'));
+        $trucks = Setting::whereIn('key', ['large_truck_rate', 'mini_truck_rate'])->get();
+        return view('backend.pages.location-price.create',compact('locations', 'trucks'));
     }
 
     /**
@@ -41,10 +43,13 @@ class LocationPriceController extends Controller
             'pickup_point' => 'required',
             'where_to' => 'required',
             'price' => 'required',
+            'settings_truck_key' => 'required',
         ]);
 
+        $settings = Setting::where('key', $request->settings_truck_key)->first();
+        $request->merge(['settings_truck_value' => $settings->value]);
         $input = $request->all();
-        $user = LocationPrice::create($input);
+        LocationPrice::create($input);
         return redirect()->route('location-price.index')
             ->with('success','Location Price set successfully');
     }
@@ -64,7 +69,8 @@ class LocationPriceController extends Controller
     {
         $locations = Location::all();
         $locationPrice = LocationPrice::find($id);
-        return view('backend.pages.location-price.edit',compact('locationPrice', 'locations'));
+        $trucks = Setting::whereIn('key', ['large_truck_rate', 'mini_truck_rate'])->get();
+        return view('backend.pages.location-price.edit',compact('locationPrice', 'locations', 'trucks'));
     }
 
     /**
@@ -77,6 +83,11 @@ class LocationPriceController extends Controller
             'where_to' => 'required',
             'price' => 'required',
         ]);
+
+        if($request->settings_truck_key != null) {
+            $settings = Setting::where('key', $request->settings_truck_key)->first();
+            $request->merge(['settings_truck_value' => $settings->value]);
+        }
         $input = $request->all();
         $user = LocationPrice::find($id);
         $user->update($input);

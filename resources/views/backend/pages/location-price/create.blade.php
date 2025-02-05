@@ -59,6 +59,17 @@
                             </div>
                             <div class="col-xs-12 col-sm-12 col-md-12">
                                 <div class="form-group">
+                                    <strong>Select Truck:</strong>
+                                    <select name="settings_truck_key" id="" class="form-control">
+                                        <option value="" selected disabled readonly="">Choose Truck</option>
+                                        @foreach($trucks as $truck)
+                                            <option value="{{$truck->key}}">{{ ucwords(str_replace('_', ' ', $truck->key)) }} - ({{ $truck->value }})</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-xs-12 col-sm-12 col-md-12">
+                                <div class="form-group">
                                     <strong>Price:</strong>
                                     {!! Form::text('price', null, array('placeholder' => 'Price','class' => 'form-control')) !!}
                                 </div>

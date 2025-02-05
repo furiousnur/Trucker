@@ -41,7 +41,9 @@
                                                 <th>No</th>
                                                 <th>Pickup Point</th>
                                                 <th>Where to</th>
-                                                <th>Price</th>
+                                                <th>Truck Type</th>
+                                                <th>Truck Price</th>
+                                                <th>Total Cost</th>
                                                 @canany(['edit-location-price', 'delete-location-price'])
                                                     <th width="280px">Action</th>
                                                 @endcanany
@@ -49,16 +51,18 @@
                                             @foreach ($data as $key => $value)
                                                 <tr>
                                                     <td>{{ ++$i }}</td>
-                                                    <td>{{ $value->pickup_point }}</td>
-                                                    <td>{{ $value->where_to }}</td>
-                                                    <td>{{ $value->price }}</td>
+                                                    <td>{{ $value->pickup_point ?? 'N/A' }}</td>
+                                                    <td>{{ $value->where_to ?? 'N/A' }}</td>
+                                                    <td>{{ $value->settings_truck_key ? ucwords(str_replace('_', ' ', $value->settings_truck_key)) : 'N/A' }}</td>
+                                                    <td>{{ $value->settings_truck_value ?? '0.00' }}</td>
+                                                    <td>{{ $value->price ?? '0.00' }}</td>
                                                     @canany(['edit-location-price', 'delete-location-price'])
                                                         <td>
                                                             @can('edit-location-price')
-                                                                <a class="btn btn-primary" href="{{ route('location-price.edit',$value->id) }}">Edit</a>
+                                                                <a class="btn btn-primary" href="{{ route('location-price.edit', $value->id) }}">Edit</a>
                                                             @endcan
                                                             @can('delete-location-price')
-                                                                {!! Form::open(['method' => 'DELETE','route' => ['location-price.destroy', $value->id],'style'=>'display:inline']) !!}
+                                                                {!! Form::open(['method' => 'DELETE', 'route' => ['location-price.destroy', $value->id], 'style' => 'display:inline']) !!}
                                                                 {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
                                                                 {!! Form::close() !!}
                                                             @endcan
