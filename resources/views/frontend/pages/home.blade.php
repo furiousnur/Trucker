@@ -34,113 +34,26 @@
                                                     <h3>Get your transport quote</h3>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Location" type="text" name="Location">
+                                                    <select name="pickup_point" id="pickup_point" class="form-control">
+                                                        <option value="" selected disabled>Choose Pickup Point</option>
+                                                        @foreach($locations as $location)
+                                                            <option value="{{ $location->id }}">{{ $location->location_name }}</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="To destination" type="text" name="To destination">
+                                                    <select name="where_to" id="where_to" class="form-control">
+                                                        <option value="" selected disabled>Choose Destination</option>
+                                                    </select>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Email" type="text" name="Email">
+                                                    <input class="transfot_form" placeholder="Email" type="text" name="email">
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Contact Number" type="text" name="Contact Number">
+                                                    <input class="transfot_form" placeholder="Contact Number" type="text" name="contact_number">
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <button class="get_now">Get Now quote</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="container-fluid">
-                        <div class="carousel-caption">
-                            <div class="row">
-                                <div class="col-md-7 col-lg-5">
-                                    <div class="text-bg">
-                                        <h1>Best Logistic Company</h1>
-                                        <span>Contrary to popular belief, Lorem Ipsum is not simply random text. It has i</span>
-                                        <a class="read_more" href="#">Contact Us</a>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-7">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="ban_track">
-                                                <figure><img src="{{asset('front-assets/images/track.png')}}" alt="#"/></figure>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <form class="transfot">
-                                                <div class="col-md-12">
-                                                    <span>Professional Services</span>
-                                                    <h3>Get your transport quote</h3>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Location" type="text" name="Location">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="To destination" type="text" name="To destination">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Email" type="text" name="Email">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Contact Number" type="text" name="Contact Number">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <button class="get_now">Get Now quote</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="carousel-item">
-                    <div class="container-fluid">
-                        <div class="carousel-caption">
-                            <div class="row">
-                                <div class="col-md-7 col-lg-5">
-                                    <div class="text-bg">
-                                        <h1>Best Logistic Company</h1>
-                                        <span>Contrary to popular belief, Lorem Ipsum is not simply random text. It has i</span>
-                                        <a class="read_more" href="#">Contact Us</a>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 col-lg-7">
-                                    <div class="row">
-                                        <div class="col-md-6">
-                                            <div class="ban_track">
-                                                <figure><img src="{{asset('front-assets/images/track.png')}}" alt="#"/></figure>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <form class="transfot">
-                                                <div class="col-md-12">
-                                                    <span>Professional Services</span>
-                                                    <h3>Get your transport quote</h3>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Location" type="text" name="Location">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="To destination" type="text" name="To destination">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Email" type="text" name="Email">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Contact Number" type="text" name="Contact Number">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <button class="get_now">Get Now quote</button>
+                                                    <button type="submit" class="get_now">Get Now quote</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -484,3 +397,33 @@
     </div>
     <!-- end contact section -->
 @endsection
+@section("extra-script")
+<script>
+    $(document).ready(function () {
+        $('#pickup_point').on('change', function () {
+            var pickupId = $(this).val();
+
+            // Clear the destination dropdown first
+            $('#where_to').html('<option value="" selected disabled>Loading...</option>');
+
+            if (pickupId) {
+                $.ajax({
+                    url: "{{ route('get.destinations', '') }}/" + pickupId, // Laravel route
+                    type: "GET",
+                    dataType: "json",
+                    success: function (response) {
+                        $('#where_to').html('<option value="" selected disabled>Choose Destination</option>');
+                        $.each(response, function (key, location) {
+                            $('#where_to').append('<option value="' + location.id + '">' + location.location_name + '</option>');
+                        });
+                    },
+                    error: function () {
+                        $('#where_to').html('<option value="" selected disabled>Error loading destinations</option>');
+                    }
+                });
+            }
+        });
+    });
+</script>
+@endsection
+

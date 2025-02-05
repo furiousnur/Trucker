@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\LocationController;
 use App\Http\Controllers\LocationPriceController;
 use App\Http\Controllers\RoleController;
@@ -23,7 +24,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 
-Route::get('/', [App\Http\Controllers\FrontendController::class, 'home'])->name('front.home');
+Route::get('/', [FrontendController::class, 'home'])->name('front.home');
+Route::get('/get-destinations/{pickupId}', [FrontendController::class, 'getDestinations'])->name('get.destinations');
+
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/registration', [LoginController::class, 'showRegistrationForm'])->name('registration');
 //Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
