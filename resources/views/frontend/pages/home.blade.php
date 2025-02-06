@@ -3,11 +3,11 @@
     <!-- banner -->
     <section class="banner_main">
         <div id="banner1" class="carousel slide banner_slide" data-ride="carousel">
-            <ol class="carousel-indicators">
+            {{-- <ol class="carousel-indicators">
                 <li data-target="#banner1" data-slide-to="0" class="active"></li>
                 <li data-target="#banner1" data-slide-to="1"></li>
                 <li data-target="#banner1" data-slide-to="2"></li>
-            </ol>
+            </ol> --}}
             <div class="carousel-inner">
                 <div class="carousel-item active">
                     <div class="container-fluid">
@@ -24,57 +24,109 @@
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="ban_track">
-                                                <figure><img src="{{asset('front-assets/images/track.png')}}" alt="#"/></figure>
+                                                <figure><img src="{{ asset('front-assets/images/track.png') }}" alt="#"/></figure>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
-                                            <form class="transfot">
+                                            <form class="transfot" action="{{ route('front.home') }}" method="get">
                                                 <div class="col-md-12">
                                                     <span>Professional Services</span>
                                                     <h3>Get your transport quote</h3>
                                                 </div>
-                                                <div class="col-md-12">
+                                                <div class="col-md-12" style="margin-bottom: 7px">
                                                     <select name="pickup_point" id="pickup_point" class="form-control">
                                                         <option value="" selected disabled>Choose Pickup Point</option>
                                                         @foreach($locations as $location)
-                                                            <option value="{{ $location->id }}">{{ $location->location_name }}</option>
+                                                            <option value="{{ $location->id }}"
+                                                                {{ request()->pickup_point == $location->id ? 'selected' : '' }}>
+                                                                {{ $location->location_name }}
+                                                            </option>
+                                                        @endforeach
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-12" style="margin-bottom: 7px">
+                                                    <select name="where_to" id="where_to" class="form-control">
+                                                        <option value="" selected disabled>Choose Destination</option>
+                                                        @foreach($locations as $location)
+                                                            <option value="{{ $location->id }}"
+                                                                {{ request()->where_to == $location->id ? 'selected' : '' }}>
+                                                                {{ $location->location_name }}
+                                                            </option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="col-md-12">
-                                                    <select name="where_to" id="where_to" class="form-control">
-                                                        <option value="" selected disabled>Choose Destination</option>
-                                                    </select>
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Email" type="text" name="email">
-                                                </div>
-                                                <div class="col-md-12">
-                                                    <input class="transfot_form" placeholder="Contact Number" type="text" name="contact_number">
-                                                </div>
-                                                <div class="col-md-12">
                                                     <button type="submit" class="get_now">Get Now quote</button>
+                                                    <button type="reset" class="get_now clear_btn">Clear</button>
                                                 </div>
                                             </form>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            @if(isset($quotes) && count($quotes) > 0)
+                                <div class="row" style="margin-top: 50px; background-color: rgb(202, 176, 61); padding: 10px">
+                                    <div class="col-sm-12">
+                                        <h1 style="text-align: center; color: white; font-weight: bold">Quotes List</h1>
+                                        <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info" style="border: 1px solid black; color: black;">
+                                            <thead>
+                                                <tr>
+                                                    <th>No</th>
+                                                    <th>Pickup Point</th>
+                                                    <th>Where to</th>
+                                                    <th>Truck Type</th>
+                                                    <th>Truck Price</th>
+                                                    <th>Total Cost</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach($quotes as $key => $value)
+                                                    <tr>
+                                                        <td>{{ ++$key }}</td>
+                                                        <td>{{ $value->pickup_point ?? 'N/A' }}</td>
+                                                        <td>{{ $value->where_to ?? 'N/A' }}</td>
+                                                        <td>{{ $value->settings_truck_key ? ucwords(str_replace('_', ' ', $value->settings_truck_key)) : 'N/A' }}</td>
+                                                        <td>{{ $value->settings_truck_value ?? '0.00' }}</td>
+                                                        <td>{{ $value->price ?? '0.00' }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <h1 style="text-align: center; color: white; font-weight: bold">Others charge will be added, if you would like to include</h1>
+                                        <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info" style="border: 1px solid black; color: black;">
+                                            <thead>
+                                                <tr>
+                                                    <th>Per Person Rate</th>
+                                                    <th>Packaging Charge</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>{{ $per_persion_rate->value }}</td>
+                                                    <td>{{ $packaging_rate->value }}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            @endif
                         </div>
                     </div>
                 </div>
             </div>
-            <a class="carousel-control-prev" href="#banner1" role="button" data-slide="prev">
+            {{-- <a class="carousel-control-prev" href="#banner1" role="button" data-slide="prev">
                 <i class="fa fa-angle-left" aria-hidden="true"></i>
             </a>
             <a class="carousel-control-next" href="#banner1" role="button" data-slide="next">
                 <i class="fa fa-angle-right" aria-hidden="true"></i>
-            </a>
+            </a> --}}
         </div>
     </section>
     <!-- end banner -->
     <!-- about section -->
-    <div id="about" class="about ">
+    <div id="about" class="about" @if(isset($quotes) && count($quotes) > 0) style="margin-top: 0px @endif">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -423,6 +475,9 @@
                 });
             }
         });
+    });
+    document.querySelector('.clear_btn').addEventListener('click', function() {
+        window.location.replace('/');
     });
 </script>
 @endsection
