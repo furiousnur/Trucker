@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="description" content="Trucker is a riding platform">
+    <meta name="description" content="BD HOME MOVERS is a riding platform">
     <!-- Twitter meta-->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:site" content="@pratikborsadiya">
@@ -9,11 +9,11 @@
     <!-- Open Graph Meta-->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Vali Admin">
-    <meta property="og:title" content="Trucker is a riding platform">
+    <meta property="og:title" content="BD HOME MOVERS is a riding platform">
     <meta property="og:url" content="http://pratikborsadiya.in/blog/vali-admin">
     <meta property="og:image" content="http://pratikborsadiya.in/blog/vali-admin/hero-social.png">
-    <meta property="og:description" content="Trucker is a riding platform">
-    <title>Trucker | {{Request::segment(1)}}</title>
+    <meta property="og:description" content="BD HOME MOVERS is a riding platform">
+    <title>BD HOME MOVERS | {{Request::segment(1)}}</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">

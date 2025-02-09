@@ -162,6 +162,11 @@
                                     <div class="form-group">
                                         <button class="send_btn" type="submit"><i  class="fa fa-sign-in fa-lg fa-fw"></i>SIGN UP</button>
                                     </div>
+                                    <div class="form-group text-center">
+                                        <a href="{{ route('login') }}" class="btn btn-secondary">
+                                            <i  class="fa fa-sign-in fa-lg fa-fw"></i> SIGN IN
+                                        </a>
+                                    </div>
                                 </form>
                             </div>
                         </div>

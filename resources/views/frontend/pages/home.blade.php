@@ -65,52 +65,99 @@
                                 </div>
                             </div>
                             @if(isset($quotes) && count($quotes) > 0)
-                                <div class="row" style="margin-top: 50px; background-color: rgb(202, 176, 61); padding: 10px">
-                                    <div class="col-sm-12">
-                                        <h1 style="text-align: center; color: white; font-weight: bold">Quotes List</h1>
-                                        <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info" style="border: 1px solid black; color: black;">
-                                            <thead>
-                                                <tr>
-                                                    <th>No</th>
-                                                    <th>Pickup Point</th>
-                                                    <th>Where to</th>
-                                                    <th>Truck Type</th>
-                                                    <th>Truck Price</th>
-                                                    <th>Total Cost</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach($quotes as $key => $value)
+                                <form action="{{ route('booking.store') }}" method="POST">
+                                    @csrf
+                                    <div class="row" style="margin-top: 50px; background-color: rgb(202, 176, 61); padding: 10px">
+                                        <div class="col-sm-12">
+                                            <h1 style="text-align: center; color: white; font-weight: bold">Quotes List</h1>
+                                            <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info" style="border: 1px solid black; color: black;">
+                                                <thead>
                                                     <tr>
-                                                        <td>{{ ++$key }}</td>
-                                                        <td>{{ $value->pickup_point ?? 'N/A' }}</td>
-                                                        <td>{{ $value->where_to ?? 'N/A' }}</td>
-                                                        <td>{{ $value->settings_truck_key ? ucwords(str_replace('_', ' ', $value->settings_truck_key)) : 'N/A' }}</td>
-                                                        <td>{{ $value->settings_truck_value ?? '0.00' }}</td>
-                                                        <td>{{ $value->price ?? '0.00' }}</td>
+                                                        <th>Select</th>
+                                                        <th>No</th>
+                                                        <th>Pickup Point</th>
+                                                        <th>Where to</th>
+                                                        <th>Truck Type</th>
+                                                        <th>Truck Price</th>
+                                                        <th>Total Cost (Include service charge)</th>
                                                     </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($quotes as $key => $value)
+                                                        <tr>
+                                                            <td>
+                                                                <input type="radio" name="selected_quote" value="{{ $value->id }}">
+                                                            </td>
+                                                            <td>{{ ++$key }}</td>
+                                                            <td>{{ $value->pickup_point ?? 'N/A' }}</td>
+                                                            <td>{{ $value->where_to ?? 'N/A' }}</td>
+                                                            <td>{{ $value->settings_truck_key ? ucwords(str_replace('_', ' ', $value->settings_truck_key)) : 'N/A' }}</td>
+                                                            <td>{{ $value->settings_truck_value ?? '0.00' }}</td>
+                                                            <td>{{ $value->price ?? '0.00' }}</td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="col-sm-12">
+                                            <h1 style="text-align: center; color: white; font-weight: bold">Others charge will be added, if you would like to include</h1>
+                                            <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info" style="border: 1px solid black; color: black;">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Number of Persons</th>
+                                                        <th>Per Person Rate</th>
+                                                        <th>Total Person Cost</th>
+                                                        <th>Packaging Charge</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="width: 250px;">
+                                                            <input type="number" id="numPersons" name="num_persons" class="form-control" min="1" value="1" oninput="calculateTotal()">
+                                                        </td>
+                                                        <td>
+                                                            <span id="perPersonRate" data-rate="{{ $per_persion_rate->value }}">{{ $per_persion_rate->value }}</span>
+                                                            <input type="hidden" name="per_person_rate" value="{{ $per_persion_rate->value }}">
+                                                        </td>
+                                                        <td>
+                                                            <span id="totalCost">{{ $per_persion_rate->value }}</span>
+                                                            <input type="hidden" id="totalCostInput" name="total_cost" value="{{ $per_persion_rate->value }}">
+                                                        </td>
+                                                        <td>
+                                                            {{ $packaging_rate->value }}
+                                                            <input type="checkbox" id="packaging_rate" style="width: 20px; height: 20px;" name="total_cost"
+                                                                value="{{ $packaging_rate->value }}">
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <input type="hidden" name="passenger_id" value="{{ Auth::user()->id }}">
+                                            <input type="hidden" name="trip_type" value="passenger">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="trip_date">Trip Date</label>
+                                            <input type="date" id="trip_date" name="trip_date" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="trip_time">Trip Time</label>
+                                            <input type="time" id="trip_time" name="trip_time" class="form-control">
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="trip_type">Trip Type</label>
+                                            <select name="trip_type" class="form-control" id="trip_type">
+                                                <option value="Regular">Regular</option>
+                                                <option value="Urgent">Urgent(10% will be added to the total)</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <label for="trip_type">Total Cost</label>
+                                            <input type="number" id="total_cost" name="total_cost" class="form-control" readonly>
+                                        </div>
+                                        <div class="col-sm-12 text-center" style="margin-top: 20px;">
+                                            <button type="submit" class="btn btn-primary">Submit</button>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-12">
-                                        <h1 style="text-align: center; color: white; font-weight: bold">Others charge will be added, if you would like to include</h1>
-                                        <table class="table table-hover table-bordered dataTable no-footer" id="sampleTable" role="grid" aria-describedby="sampleTable_info" style="border: 1px solid black; color: black;">
-                                            <thead>
-                                                <tr>
-                                                    <th>Per Person Rate</th>
-                                                    <th>Packaging Charge</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <tr>
-                                                    <td>{{ $per_persion_rate->value }}</td>
-                                                    <td>{{ $packaging_rate->value }}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                                </form>
                             @endif
                         </div>
                     </div>
@@ -126,7 +173,7 @@
     </section>
     <!-- end banner -->
     <!-- about section -->
-    <div id="about" class="about" @if(isset($quotes) && count($quotes) > 0) style="margin-top: 0px @endif">
+    <div id="about" class="about" @if(isset($quotes) && count($quotes) > 0) style="margin-top: 50px @endif">
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -454,10 +501,7 @@
     $(document).ready(function () {
         $('#pickup_point').on('change', function () {
             var pickupId = $(this).val();
-
-            // Clear the destination dropdown first
             $('#where_to').html('<option value="" selected disabled>Loading...</option>');
-
             if (pickupId) {
                 $.ajax({
                     url: "{{ route('get.destinations', '') }}/" + pickupId, // Laravel route
@@ -478,6 +522,57 @@
     });
     document.querySelector('.clear_btn').addEventListener('click', function() {
         window.location.replace('/');
+    });
+    function calculateTotal() {
+        let numPersons = document.getElementById('numPersons').value;
+        let perPersonRate = document.getElementById('perPersonRate').getAttribute('data-rate');
+        let totalCost = numPersons * perPersonRate;
+        document.getElementById('totalCost').innerText = totalCost.toFixed(2);
+    }
+    document.addEventListener("DOMContentLoaded", function () {
+        function calculateTotal() {
+            let selectedQuote = document.querySelector('input[name="selected_quote"]:checked');
+            let numPersons = parseInt(document.getElementById("numPersons").value) || 1;
+            let perPersonRate = parseFloat(document.getElementById("perPersonRate").dataset.rate) || 0;
+            let packagingCharge = document.getElementById("packaging_rate").checked
+                                    ? parseFloat(document.getElementById("packaging_rate").value) || 0
+                                    : 0;
+            let tripType = document.getElementById("trip_type").value;
+            let urgentCharge = 0;
+
+            // Get the selected quote's total price
+            let selectedPrice = 0;
+            if (selectedQuote) {
+                let row = selectedQuote.closest("tr");
+                selectedPrice = parseFloat(row.querySelector("td:nth-child(7)").textContent) || 0;
+            }
+
+            // Calculate total person cost
+            let totalPersonCost = numPersons * perPersonRate;
+
+            // Calculate base total
+            let baseTotal = selectedPrice + totalPersonCost + packagingCharge;
+
+            // Apply urgent charge (10% extra)
+            if (tripType === "Urgent") {
+                urgentCharge = baseTotal * 0.10;
+            }
+
+            // Final total cost
+            let finalTotal = baseTotal + urgentCharge;
+
+            // Update the total cost field
+            document.getElementById("total_cost").value = finalTotal.toFixed(2);
+        }
+
+        // Event listeners for instant calculation
+        document.querySelectorAll('input[name="selected_quote"]').forEach(radio => {
+            radio.addEventListener("change", calculateTotal);
+        });
+
+        document.getElementById("numPersons").addEventListener("input", calculateTotal);
+        document.getElementById("packaging_rate").addEventListener("change", calculateTotal);
+        document.getElementById("trip_type").addEventListener("change", calculateTotal);
     });
 </script>
 @endsection

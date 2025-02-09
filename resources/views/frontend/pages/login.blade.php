@@ -34,25 +34,30 @@
                                     @csrf
                                     <div class="form-group">
                                         <input id="email" type="email" class="form-control contactus @error('email') is-invalid @enderror"
-                                               name="email" value="{{ old('email') }}" required autocomplete="email" autofocus>
+                                               name="email" value="{{ old('email') }}" required autocomplete="email" autofocus placeholder="Enter Your Email">
                                         @error('email')
                                         <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <input id="password" type="password"
                                                class="form-control contactus @error('password') is-invalid @enderror" name="password"
-                                               required autocomplete="current-password">
+                                               required autocomplete="current-password" placeholder="Enter Your Password">
                                         @error('password')
                                         <span class="invalid-feedback" role="alert">
-                                    <strong>{{ $message }}</strong>
-                                </span>
+                                            <strong>{{ $message }}</strong>
+                                        </span>
                                         @enderror
                                     </div>
                                     <div class="form-group">
                                         <button class="send_btn"><i  class="fa fa-sign-in fa-lg fa-fw"></i>SIGN IN</button>
+                                    </div>
+                                    <div class="form-group text-center">
+                                        <a href="{{ route('registration') }}" class="btn btn-secondary">
+                                            <i  class="fa fa-sign-in fa-lg fa-fw"></i> SIGN UP
+                                        </a>
                                     </div>
                                 </form>
                             </div>
@@ -62,5 +67,4 @@
             </div>
         </div>
     </section>
-    <!-- end banner -->
 @endsection

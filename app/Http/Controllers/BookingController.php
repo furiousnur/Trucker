@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use App\Models\Location;
+use App\Models\LocationPrice;
 use App\Models\Payment;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -100,6 +101,14 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
+        if($request->selected_quote){
+            $priceLocation = LocationPrice::find($request->selected_quote);
+            $request->merge([
+                'price' => $priceLocation->price,
+                'where_to' => $priceLocation->where_to,
+                'pickup_point' => $priceLocation->pickup_point
+            ]);
+        }
         $this->validate($request, [
             'passenger_id' => 'required',
             'trip_type' => 'required',
